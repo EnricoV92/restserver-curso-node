@@ -39,6 +39,7 @@ const validarJWT = async (req = request, res = response, next ) => {
         next();
         
     } catch (error) {
+        // script heroku logs -n 100 --tail ver los logs en backend de produccion
         console.log(error);
         res.status(401).json({
             msg: 'Token no valido'
