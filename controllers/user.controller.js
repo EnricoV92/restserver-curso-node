@@ -3,7 +3,7 @@ const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
 
 
-const User = require('../models/usuario.model');
+const User = require('../models/user.model');
 
 
 const usuariosGet = async (req = request, res = response) => {
@@ -58,15 +58,15 @@ const usuariosPost = async (req, res = response) => {
 const usuariosPut = async (req, res = response) => {
 
     const { id } = req.params;
-    const { _id, password, google, email, ...args} = req.body;
+    const { _id, password, google, email, ...data} = req.body;
 
     if(password) {
         // Encriptar la password
     const salt = bcryptjs.genSaltSync();
-    args.password = bcryptjs.hashSync(password, salt);
+    data.password = bcryptjs.hashSync(password, salt);
     }
 
-    const user = await User.findByIdAndUpdate(id, args, {new: true});
+    const user = await User.findByIdAndUpdate(id, data, {new: true});
     
 
     res.json({
@@ -77,7 +77,6 @@ const usuariosPut = async (req, res = response) => {
 const usuariosDelete = async (req, res = response) => {
 
     const { id } = req.params;
-    const uid = req.uid;
     
     // Delete fisicamente
     //const user = await User.findByIdAndDelete(id);
